@@ -33,7 +33,6 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Public access for auth endpoints
-                        .requestMatchers("/**").permitAll() // Public access for auth endpoints
                         .anyRequest().authenticated() // Secured for all other endpoints
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add the JWT filter

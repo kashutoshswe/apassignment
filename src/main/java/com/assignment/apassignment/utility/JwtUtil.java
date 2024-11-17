@@ -4,8 +4,8 @@ package com.assignment.apassignment.utility;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -26,22 +26,18 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));  // Key generated from your secret string
     }
 
-    private SecretKey generateSecureKeyForHS256() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256); // This guarantees a secure 256-bit key
-    }
-
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration)) // 1 hour
-                .signWith(generateSecureKeyForHS256()) // Use SecretKey and algorithm
+                .signWith(getSigningKey()) // Use SecretKey and algorithm
                 .compact();
     }
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(generateSecureKeyForHS256())
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -49,6 +45,14 @@ public class JwtUtil {
     }
 
     public boolean isTokenExpired(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+        return Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+    }
+
+    // Method to validate the token
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+
+        // Check if the username matches and if the token is not expired
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
