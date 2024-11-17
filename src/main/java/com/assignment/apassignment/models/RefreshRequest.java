@@ -1,13 +1,13 @@
 package com.assignment.apassignment.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class RefreshRequest {
     private String refreshToken;
+    public RefreshRequest(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 }
 

@@ -5,7 +5,7 @@ FROM openjdk:23-jdk-slim AS builder
 WORKDIR /app
 
 # Copy the jar file from the target directory to the container
-COPY target/apassignment.jar app.jar
+COPY target/apassignment-3.3.5.jar app.jar
 
 # Expose the port your application will run on
 EXPOSE 8080

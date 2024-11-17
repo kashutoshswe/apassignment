@@ -9,7 +9,6 @@ import com.assignment.apassignment.repository.UserRepository;
 import com.assignment.apassignment.service.TokenService;
 import com.assignment.apassignment.utility.JwtUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Auth APIs", description = "Auth management APIs")
@@ -50,7 +48,6 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody LoginRequest request)
     {
-        log.info("Sign in request for user", request.getUsername());
         try
         {
             authenticationManager.authenticate(
@@ -61,7 +58,6 @@ public class AuthController {
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
