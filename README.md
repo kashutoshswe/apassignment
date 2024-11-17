@@ -80,11 +80,4 @@ curl -X POST http://localhost:8080/api/auth/revoke \
 ---
 
 ## Troubleshooting
-- Ensure the environment variables are correctly set.
 - Make sure Docker and Docker Compose are installed and running.
-
----
-
-### Notes
-- **Sensitive Data**: Do not share sensitive environment variables in your repository.
-- **Security**: Always secure the JWT secret and database credentials.
